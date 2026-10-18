@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="JobPlus — a modern frontend job discovery and candidate workspace.">
+  <title>JobPlus | Fresh Jobs, Faster Action</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app" id="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-icon">J</div>
+        <div>
+          <strong>JobPlus</strong>
+          <span>Fresh jobs, faster action</span>
+        </div>
+      </div>
+
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-link active" data-page="home"><span>⌂</span><b>Dashboard</b></button>
+        <button class="nav-link" data-page="discover"><span>⌕</span><b>Discover jobs</b><em
+            id="newJobsBadge">6</em></button>
+        <button class="nav-link" data-page="saved"><span>♡</span><b>Saved jobs</b><em id="savedBadge">0</em></button>
+        <button class="nav-link" data-page="applications"><span>✓</span><b>Applications</b><em
+            id="applicationBadge">0</em></button>
+        <button class="nav-link" data-page="profile"><span>◉</span><b>My profile</b></button>
+      </nav>
+
+      <div class="workspace-label">INSIGHTS</div>
+      <nav class="nav">
+        <button class="nav-link" data-page="analytics"><span>▥</span><b>Job search analytics</b></button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="profile-mini" id="profileMini">
+          <div class="avatar" id="sideAvatar">G</div>
+          <div class="profile-mini-copy">
+            <strong id="sideName">Guest User</strong>
+            <span id="sideRole">Complete your profile</span>
+          </div>
+          <button class="mini-edit" data-page="profile" aria-label="Edit profile">✎</button>
+        </div>
+        <button class="theme-toggle" id="themeToggle"><span id="themeIcon">☾</span> Appearance</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
+          <div>
+            <span class="date-line" id="dateLine"></span>
+            <h1 id="pageHeading">Good morning, Engineer 👋</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button class="notification-button" id="notificationButton" aria-label="Notifications">
+            <span>♢</span><i></i>
+          </button>
+          <button class="top-user" data-page="profile">
+            <span class="avatar avatar-small" id="topAvatar">G</span>
+            <span id="topName">Guest</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- DASHBOARD -->
+      <section class="page active" id="homePage">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="status-pill"><i></i> FRESH JOB ENGINE</div>
+            <h2>Don't apply late.<br><span>Apply first.</span></h2>
+            <p>JobPlus helps you discover relevant opportunities while they are still fresh, build a strong candidate
+              profile, and manage your complete application pipeline.</p>
+            <div class="hero-actions">
+              <button class="button primary" data-page="discover">Explore fresh jobs <span>→</span></button>
+              <button class="button hero-ghost" data-page="profile">Improve my profile</button>
+            </div>
+          </div>
+          <div class="hero-visual" aria-hidden="true">
+            <div class="hero-ring ring-one"></div>
+            <div class="hero-ring ring-two"></div>
+            <div class="hero-center">
+              <span>TOP MATCH</span><strong id="heroMatch">96%</strong><small>Frontend Engineer</small>
+            </div>
+            <div class="floating-stat stat-a"><b>2h</b><span>fresh</span></div>
+            <div class="floating-stat stat-b"><b>14</b><span>matches</span></div>
+          </div>
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card">
+            <div class="metric-icon purple">✦</div>
+            <div><span>Fresh opportunities</span><strong id="metricFresh">0</strong><small>posted recently</small></div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-icon pink">♡</div>
+            <div><span>Saved jobs</span><strong id="metricSaved">0</strong><small>in your shortlist</small></div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-icon green">✓</div>
+            <div><span>Applications</span><strong id="metricApplications">0</strong><small>tracked by you</small></div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-icon blue">◉</div>
+            <div><span>Profile strength</span><strong id="metricProfile">0%</strong><small>candidate profile</small>
+            </div>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="content-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Best matches for you</h2>
+                <p>Personalized from your skills, experience and preferences.</p>
+              </div>
+              <button class="link-button" data-page="discover">View all →</button>
+            </div>
+            <div id="recommendedList" class="recommended-list"></div>
+          </div>
+
+          <aside class="content-panel quick-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Profile strength</h2>
+                <p>Complete your profile to improve matching.</p>
+              </div>
+            </div>
+            <div class="profile-score">
+              <div class="score-circle" id="scoreCircle"><span id="scoreValue">0%</span></div>
+              <div><strong id="scoreTitle">Let's get started</strong>
+                <p id="scoreText">Add your information to unlock better recommendations.</p>
+              </div>
+            </div>
+            <div class="check-list" id="profileChecks"></div>
+            <button class="button primary full-width" data-page="profile">Complete profile</button>
+          </aside>
+        </div>
+
+        <div class="section-title-row">
+          <div><span class="section-kicker">RECENTLY POSTED</span>
+            <h2>Fresh on JobPlus</h2>
+          </div>
+          <button class="link-button" data-page="discover">See all jobs →</button>
+        </div>
+        <div class="mini-job-grid" id="freshJobs"></div>
+      </section>
+
+      <!-- DISCOVER -->
+      <section class="page" id="discoverPage">
+        <div class="page-intro">
+          <div><span class="section-kicker">DISCOVER</span>
+            <h2>Fresh opportunities</h2>
+            <p>Search across roles, companies, skills and locations.</p>
+          </div>
+          <div class="live-feed"><i></i> Live feed <span id="feedTime">now</span></div>
+        </div>
+
+        <div class="search-toolbar">
+          <div class="search-input-wrap"><span>⌕</span><input id="searchInput" type="search"
+              placeholder="Search role, company, skill..." autocomplete="off"><kbd>/</kbd></div>
+          <select id="locationFilter">
+            <option value="all">All locations</option>
+            <option>Mumbai</option>
+            <option>Bangalore</option>
+            <option>Delhi</option>
+            <option>Hyderabad</option>
+            <option>Pune</option>
+          </select>
+          <select id="experienceFilter">
+            <option value="all">All experience</option>
+            <option value="fresher">Fresher / 0–1</option>
+            <option value="1-3">1–3 years</option>
+            <option value="3-5">3–5 years</option>
+          </select>
+          <select id="sortFilter">
+            <option value="fresh">Freshest</option>
+            <option value="match">Best match</option>
+            <option value="salary">Highest salary</option>
+          </select>
+        </div>
+
+        <div class="filter-row">
+          <div class="active-filters" id="activeFilters"></div>
+          <span class="results-label" id="resultsLabel">0 jobs</span>
+        </div>
+        <div class="jobs-grid" id="jobsGrid"></div>
+        <div class="empty-state hidden" id="jobsEmpty">
+          <div>⌕</div>
+          <h3>No matching jobs</h3>
+          <p>Try another keyword, location or experience filter.</p><button class="button secondary"
+            id="clearFilters">Reset filters</button>
+        </div>
+      </section>
+
+      <!-- SAVED -->
+      <section class="page" id="savedPage">
+        <div class="page-intro">
+          <div><span class="section-kicker">SHORTLIST</span>
+            <h2>Saved jobs</h2>
+            <p>Keep promising opportunities within easy reach.</p>
+          </div>
+        </div>
+        <div class="jobs-grid" id="savedGrid"></div>
+        <div class="empty-state hidden" id="savedEmpty">
+          <div>♡</div>
+          <h3>Your shortlist is empty</h3>
+          <p>Tap the heart on a job card to save it.</p><button class="button primary" data-page="discover">Discover
+            jobs</button>
+        </div>
+      </section>
+
+      <!-- APPLICATIONS -->
+      <section class="page" id="applicationsPage">
+        <div class="page-intro">
+          <div><span class="section-kicker">PIPELINE</span>
+            <h2>Application tracker</h2>
+            <p>One place to manage your job-search progress.</p>
+          </div><button class="button primary" data-page="discover">+ Find a job</button>
+        </div>
+        <div class="pipeline" id="pipelineStats"></div>
+        <div class="application-board">
+          <div class="board-column">
+            <div class="board-heading"><span>Applied</span><b id="countApplied">0</b></div>
+            <div id="colApplied"></div>
+          </div>
+          <div class="board-column">
+            <div class="board-heading interview"><span>Interview</span><b id="countInterview">0</b></div>
+            <div id="colInterview"></div>
+          </div>
+          <div class="board-column">
+            <div class="board-heading offer"><span>Offer</span><b id="countOffer">0</b></div>
+            <div id="colOffer"></div>
+          </div>
+          <div class="board-column">
+            <div class="board-heading rejected"><span>Closed</span><b id="countRejected">0</b></div>
+            <div id="colRejected"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROFILE -->
+      <section class="page" id="profilePage">
+        <div class="page-intro">
+          <div><span class="section-kicker">CANDIDATE PROFILE</span>
+            <h2>Build your professional profile</h2>
+            <p>Your profile powers FirstHire's job matching experience.</p>
+          </div>
+          <div class="completion-badge"><strong id="profilePercent">0%</strong><span>complete</span></div>
+        </div>
+
+        <div class="profile-layout">
+          <div>
+            <form id="profileForm">
+              <div class="form-card">
+                <div class="form-card-title">
+                  <div class="form-icon">01</div>
+                  <div>
+                    <h3>Personal information</h3>
+                    <p>How should recruiters identify you?</p>
+                  </div>
+                </div>
+                <div class="form-grid">
+                  <label>Full name *<input id="fullName" required placeholder="Your full name"></label>
+                  <label>Email address *<input id="email" type="email" required placeholder="you@example.com"></label>
+                  <label>Phone number<input id="phone" type="tel" placeholder="+91 98765 43210"></label>
+                  <label>Current location<input id="currentLocation" placeholder="Mumbai, Maharashtra"></label>
+                  <label class="wide">Professional headline<input id="headline"
+                      placeholder="B.Tech Student | Frontend Developer | JavaScript"></label>
+                  <label class="wide">Professional summary<textarea id="bio" rows="4"
+                      placeholder="Briefly describe your education, strengths, projects and career goal..."></textarea></label>
+                </div>
+              </div>
+
+              <div class="form-card">
+                <div class="form-card-title">
+                  <div class="form-icon">02</div>
+                  <div>
+                    <h3>Education & experience</h3>
+                    <p>Help us understand your professional background.</p>
+                  </div>
+                </div>
+                <div class="form-grid">
+                  <label>Highest qualification<select id="qualification">
+                      <option value="">Select qualification</option>
+                      <option>B.Tech / B.E.</option>
+                      <option>MCA</option>
+                      <option>M.Tech</option>
+                      <option>B.Sc.</option>
+                      <option>Diploma</option>
+                      <option>Other</option>
+                    </select></label>
+                  <label>Branch / specialization<input id="branch" placeholder="Electronics Engineering"></label>
+                  <label>College / university<input id="college" placeholder="College or university"></label>
+                  <label>Graduation year<input id="graduationYear" type="number" min="2020" max="2035"
+                      placeholder="2027"></label>
+                  <label>Experience<select id="experience">
+                      <option value="">Select experience</option>
+                      <option value="fresher">Fresher / 0–1 years</option>
+                      <option value="1-3">1–3 years</option>
+                      <option value="3-5">3–5 years</option>
+                      <option value="5+">5+ years</option>
+                    </select></label>
+                  <label>Current / last job title<input id="jobTitle" placeholder="Frontend Intern / Student"></label>
+                  <label class="wide">Company / organization<input id="company"
+                      placeholder="Company name, if applicable"></label>
+                </div>
+              </div>
+
+              <div class="form-card">
+                <div class="form-card-title">
+                  <div class="form-icon">03</div>
+                  <div>
+                    <h3>Technical skills</h3>
+                    <p>Add skills you can confidently discuss in an interview.</p>
+                  </div>
+                </div>
+                <div class="skill-input"><input id="skillInput" placeholder="e.g. JavaScript, React, TypeScript"><button
+                    type="button" class="button secondary" id="addSkill">Add skill</button></div>
+                <div class="skills" id="skillList"></div>
+                <p class="form-help">Recommended for this role: JavaScript, TypeScript, React, HTML, CSS, DOM, REST API,
+                  Git, WebSockets, Testing, Accessibility.</p>
+              </div>
+
+              <div class="form-card">
+                <div class="form-card-title">
+                  <div class="form-icon">04</div>
+                  <div>
+                    <h3>Job preferences</h3>
+                    <p>Tell FirstHire what kind of opportunity you want next.</p>
+                  </div>
+                </div>
+                <div class="form-grid">
+                  <label>Target role<input id="targetRole" placeholder="Associate Frontend Developer"></label>
+                  <label>Preferred location<input id="preferredLocation" placeholder="Mumbai"></label>
+                  <label>Work mode<select id="workMode">
+                      <option value="">Select work mode</option>
+                      <option>On-site</option>
+                      <option>Hybrid</option>
+                      <option>Remote</option>
+                    </select></label>
+                  <label>Expected salary<select id="expectedSalary">
+                      <option value="">Select salary</option>
+                      <option>₹4–6 LPA</option>
+                      <option>₹6–8 LPA</option>
+                      <option>₹8–10 LPA</option>
+                      <option>₹10–15 LPA</option>
+                      <option>₹15+ LPA</option>
+                    </select></label>
+                  <label>GitHub<input id="github" type="url" placeholder="https://github.com/username"></label>
+                  <label>LinkedIn<input id="linkedin" type="url" placeholder="https://linkedin.com/in/username"></label>
+                  <label class="wide">Portfolio<input id="portfolio" type="url"
+                      placeholder="https://yourportfolio.dev"></label>
+                </div>
+              </div>
+
+              <div class="form-card">
+                <div class="form-card-title">
+                  <div class="form-icon">05</div>
+                  <div>
+                    <h3>Resume</h3>
+                    <p>Attach your latest resume for your candidate workspace.</p>
+                  </div>
+                </div>
+                <label class="upload-box" for="resumeFile"><span class="upload-icon">↑</span><strong>Choose
+                    resume</strong><small>PDF, DOC or DOCX · max 5 MB</small><input id="resumeFile" type="file"
+                    accept=".pdf,.doc,.docx"></label>
+                <div class="selected-file hidden" id="selectedFile"><span>▤</span>
+                  <div><strong id="resumeName">resume.pdf</strong><small>Ready for your profile</small></div><button
+                    type="button" id="removeResume">×</button>
+                </div>
+              </div>
+
+              <div class="form-actions"><button class="button primary" type="submit">Save profile
+                  <span>✓</span></button><button class="button secondary" type="button" id="resetProfile">Reset
+                  changes</button></div>
+            </form>
+          </div>
+
+          <aside class="profile-aside">
+            <div class="candidate-card">
+              <div class="candidate-cover"></div>
+              <div class="candidate-body">
+                <div class="candidate-avatar" id="candidateAvatar">G</div>
+                <h3 id="candidateName">Guest User</h3>
+                <p id="candidateHeadline">Add a professional headline</p>
+                <div class="candidate-location" id="candidateLocation">⌖ Location not added</div>
+                <div class="candidate-score">
+                  <div><span>Profile strength</span><strong id="candidateScore">0%</strong></div>
+                  <div class="progress"><i id="candidateProgress"></i></div>
+                </div>
+                <div class="candidate-tags" id="candidateTags"></div>
+              </div>
+            </div>
+            <div class="tip-card"><span>✦</span>
+              <h3>Matching tip</h3>
+              <p id="matchingTip">Add your target role and technical skills. FirstHire will use them to rank relevant
+                jobs.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ANALYTICS -->
+      <section class="page" id="analyticsPage">
+        <div class="page-intro">
+          <div><span class="section-kicker">INSIGHTS</span>
+            <h2>Your job-search analytics</h2>
+            <p>A frontend-only analytics view using your saved local activity.</p>
+          </div>
+        </div>
+        <div class="analytics-grid">
+          <div class="content-panel chart-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Application activity</h2>
+                <p>Applications tracked in this browser.</p>
+              </div>
+            </div>
+            <div class="bar-chart" id="activityChart"></div>
+          </div>
+          <div class="content-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Search health</h2>
+                <p>Signals from your current workspace.</p>
+              </div>
+            </div>
+            <div id="searchHealth"></div>
+          </div>
+        </div>
+        <div class="content-panel" style="margin-top:18px">
+          <div class="panel-heading">
+            <div>
+              <h2>Skills in your profile</h2>
+              <p>These influence your match score.</p>
+            </div>
+          </div>
+          <div class="skill-frequency" id="skillFrequency"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- JOB MODAL -->
+  <div class="modal hidden" id="jobModal" role="dialog" aria-modal="true" aria-labelledby="jobModalTitle">
+    <div class="modal-card">
+      <button class="modal-close" id="modalClose" aria-label="Close dialog">×</button>
+      <div id="jobModalContent"></div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATIONS -->
+  <div class="notification-popover hidden" id="notificationPopover">
+    <div class="popover-header"><strong>Notifications</strong><button id="closeNotifications">×</button></div>
+    <div class="notification-item"><span>⚡</span>
+      <div><strong>Fresh jobs are waiting</strong>
+        <p>New opportunities were added to your feed.</p>
+      </div>
+    </div>
+    <div class="notification-item"><span>◉</span>
+      <div><strong>Complete your profile</strong>
+        <p>More profile data can improve your matches.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIRST-LOGIN / PROFILE ONBOARDING -->
+  <div class="modal hidden" id="welcomeModal" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+    <div class="welcome-card">
+      <div class="welcome-visual">
+        <div class="welcome-logo">J</div>
+        <div class="welcome-orbit"></div>
+      </div>
+      <div>
+        <span class="section-kicker">WELCOME TO JOBPLUS</span>
+        <h2 id="welcomeTitle">Let's build your candidate profile.</h2>
+        <p>Enter a few details so the dashboard can personalize your job matches. You can edit everything later.</p>
+      </div>
+      <form id="welcomeForm">
+        <div class="welcome-grid">
+          <label>Full name *<input id="welcomeName" required placeholder="Your name"></label>
+          <label>Email *<input id="welcomeEmail" type="email" required placeholder="you@example.com"></label>
+          <label>Qualification<select id="welcomeQualification">
+              <option value="">Select</option>
+              <option>B.Tech / B.E.</option>
+              <option>MCA</option>
+              <option>M.Tech</option>
+              <option>B.Sc.</option>
+              <option>Other</option>
+            </select></label>
+          <label>Experience<select id="welcomeExperience">
+              <option value="">Select</option>
+              <option value="fresher">Fresher / 0–1 years</option>
+              <option value="1-3">1–3 years</option>
+              <option value="3-5">3–5 years</option>
+            </select></label>
+          <label>Target role<input id="welcomeRole" placeholder="Frontend Developer"></label>
+          <label>Preferred location<input id="welcomeLocation" placeholder="Mumbai"></label>
+        </div>
+        <button class="button primary full-width" type="submit">Create my profile →</button>
+      </form>
+      <button class="skip-welcome" id="skipWelcome">Skip for now</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><span>✓</span>
+    <p id="toastMessage"></p>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
